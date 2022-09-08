@@ -7,4 +7,7 @@ v1：使基於 ubuntu 2204 base image 建置的輕量設定包
 
 #### 使用方式 (基於 v1)
 1. 把資料夾複製到 linux 虛擬機中
-2. cd 進入資料夾，執行其中的 start.sh
+2. 在 app.py 寫入 flask app
+3. 把要用 render_template render 的 html 檔放入 templates
+4. CSS、javascript 檔案放入 static
+5. 啟動 start.sh
