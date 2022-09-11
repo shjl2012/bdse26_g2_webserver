@@ -11,7 +11,10 @@ COPY ./app /app
 # 安裝必要套件 (apt-get)
 RUN apt-get update && \
     apt-get install -y wget && \
-    apt-get install -y python3
+    apt-get install -y python3-dev && \
+    apt-get install -y gdal-bin && \
+    apt-get install -y libgdal-dev && \ 
+    apt-get install -y g++
 
 RUN wget https://bootstrap.pypa.io/get-pip.py && \
     python3 get-pip.py

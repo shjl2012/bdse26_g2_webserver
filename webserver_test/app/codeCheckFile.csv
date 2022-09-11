@@ -1,0 +1,2 @@
+,idx,lon,lat,geometry,near_hospital_250,near_hospital_500,near_hospital_750,機構名稱_dist,clinic_count_250,clinic_count_500,clinic_count_750,dentist_count_250,dentist_count_500,dentist_count_750,pharmacy_count_250,pharmacy_count_500,pharmacy_count_750,conveniencestore_250,conveniencestore_500,conveniencestore_750,fastfood_250,fastfood_500,fastfood_750
+0,1,121.57518399999998,25.0470205,POINT (308037.58473390737 2771108.990367768),0.0,0.0,0.0,753.2742698890899,11,33,70,5,19,36,4,15,24,6,27,52,0.0,2,6
