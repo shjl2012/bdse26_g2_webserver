@@ -1,8 +1,8 @@
 # bdse26_g2_webserver
 
 webserver_reference：使用 tiangolo/uwsgi-nginx-flask-docker 的測試伺服器\
-webserver_test：以 ubuntu 2204 base image 建置的測試環境
-webserver_deploy：最後發佈版本
+webserver_test：以 ubuntu 2204 base image 建置的測試環境\
+webserver_deploy：最後發佈版本\
 webserver_docker：以 ubutu server base image 建立的 docker 發佈版本 
 
 ※期末專題預定使用 webserver_deploy (預定發布至 Heroku)
