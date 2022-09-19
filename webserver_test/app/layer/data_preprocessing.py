@@ -79,19 +79,30 @@ class HouseObject:
             i = i + 1
             if i == 3:
                 if join_type == 'near':
-                    self.gf = ckdnearest(self.gf, target_layer, layer_join_index_name)
+                    self.gf = ckdnearest(self.gf, target_layer, layer_name)
                 return output_point.to_json()
 
     def overlay_polygon_layer(self, target_layer, layer_name, layer_join_index_name, join_type):
         i = 0
         for house_buffer in self.bufferList:
             intersection = gpd.overlay(house_buffer, target_layer,  how='intersection', keep_geom_type=True)
-            intersection_count = intersection.groupby('idx').agg({layer_join_index_name:'count'})
-            intersection_count.rename(columns={layer_join_index_name: layer_name+'_'+self.buffer_range[i]}, inplace=True)
+            if join_type == 'area':
+                intersection["AREA"] = intersection['geometry'].area
+                intersection_count = intersection.groupby('idx').agg({"AREA":'sum'})
+                intersection_count.rename(columns={'AREA': layer_name+'_'+self.buffer_range[i]}, inplace=True)
+            else:
+                intersection_count = intersection.groupby('idx').agg({layer_join_index_name:'count'})
+                intersection_count.rename(columns={layer_join_index_name: layer_name+'_'+self.buffer_range[i]}, inplace=True)
             self.gf = self.gf.merge(intersection_count,how='left', left_on='idx', right_on='idx')
-            self.gf.loc[self.gf[layer_name+'_'+ self.buffer_range[i]].isnull(), layer_name+'_'+ self.buffer_range[i]] = 0
+            if join_type == 'count' or join_type == 'area':
+                self.gf.loc[self.gf[layer_name+ '_' + self.buffer_range[i]].isnull(), layer_name+'_'+ self.buffer_range[i]] = 0
+            if join_type == 'near':
+                self.gf.loc[self.gf[layer_name+ '_' + self.buffer_range[i]].notnull(), layer_name+'_'+ self.buffer_range[i]] = 1
+                self.gf.loc[self.gf[layer_name+ '_' + self.buffer_range[i]].isnull(), layer_name+'_'+ self.buffer_range[i]] = 0
             i = i + 1
             if i == 3:
+                if join_type == 'near':
+                    self.gf = ckdnearest(self.gf, target_layer.centroid, layer_name)
                 target_layer['geometry'] = target_layer['geometry'].centroid
                 output_point = target_layer[target_layer['full_id'].isin(intersection['full_id'])]
                 output_point = output_point.to_crs(epsg=4326)
