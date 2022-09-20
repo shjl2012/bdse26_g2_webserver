@@ -8,9 +8,9 @@ docker_deply：最終發佈版本
 
 #### 使用方式 (基於 docker_deploy)
 1. 把資料夾複製到 linux 虛擬機中
-2. 在 app.py 寫入 flask app
-3. 把要用 render_template render 的 html 檔放入 templates
-4. CSS、javascript 檔案放入 static
-5-1. (第一次啟動或有修改 Dockerfile) ./buildnstart.sh
-5-2. (不需要更新 image，建置新的 container) ./newcontainer.sh
-5-3. (不需要更新 image，啟動以建立的 container) ./restartcontainer.sh
+2. 在 app.py 寫入 flask app\
+3. 把要用 render_template render 的 html 檔放入 templates\
+4. CSS、javascript 檔案放入 static\
+5-1. (第一次啟動或有修改 Dockerfile) ./buildnstart.sh\
+5-2. (不需要更新 image，建置新的 container) ./newcontainer.sh\
+5-3. (不需要更新 image，啟動以建立的 container) ./restartcontainer.sh\
