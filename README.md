@@ -14,4 +14,4 @@ docker_deply：最終發佈版本
 5. 使用 bashscript 啟動 container\
 5-1. (第一次啟動或有修改 Dockerfile) ./buildnstart.sh\
 5-2. (不需要更新 image，建置新的 container) ./newcontainer.sh\
-5-3. (不需要更新 image，啟動以建立的 container) ./restartcontainer.sh\
+5-3. (不需要更新 image，啟動以建立的 container) ./restartcontainer.sh
