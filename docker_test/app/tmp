@@ -1,0 +1,110 @@
+<div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" //
+        style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+    <canvas id="line_history_Chart" width="500" height="250" //
+        style="display: block; width: 500px; height: 250px;"></canvas>
+
+    <script>
+        const inputs = {
+            min: 0,
+            max: 100,
+            count: 10,
+            decimals: 2,
+            continuity: 1
+        };
+        const line_history_labels = [
+            '101年',
+            '102年',
+            '103年',
+            '104年',
+            '105年',
+            '106年',
+            '107年',
+            '108年',
+            '109年',
+            '110年',
+        ];
+
+        const line_history_data = {
+            labels: line_history_labels,
+            datasets: [{
+                label: '該位置歷史成交價格',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: [0, 10, 5, 2, 20, 30, 45, 0, 0, 15],
+            }]
+        };
+
+        const line_history_config = {
+            type: 'line',
+            data: line_history_data,
+            options: {
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            },
+        };
+
+    </script>
+
+    <script>
+        const line_history_Chart = new Chart(
+            document.getElementById('line_history_Chart'),
+            line_history_config
+        );
+    </script>
+
+</div>
+<div class="chart-container"><iframe class="chartjs-hidden-iframe" tabindex="-1" //
+        style="display: block; overflow: hidden; border: 0px; margin: 0px; inset: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+    <canvas id="doughnutChart" width="1000" height="500" //
+        style="display: block; height: 250px; width: 500px;"></canvas>
+
+    <script>
+        const doughnut_labels = [
+            '高中含以下',
+            '學士',
+            '碩士/博士',
+        ];
+
+        const doughnut_data = {
+            labels: doughnut_labels,
+            datasets: [{
+                label: [
+                    '高中含以下',
+                    '學士',
+                    '碩士/博士',
+                ],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                data: [20, 70, 10],
+            }]
+        };
+
+        const doughnut_config = {
+            type: 'doughnut',
+            data: doughnut_data,
+            options: {
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                }
+            },
+        };
+
+    </script>
+
+    <script>
+        const doughnutChart = new Chart(
+            document.getElementById('doughnutChart'),
+            doughnut_config
+        );
+    </script>
+
+    //
+</div>

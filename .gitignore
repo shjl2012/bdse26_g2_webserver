@@ -1,0 +1,4 @@
+docker_deploy_backup/
+app_model_data/
+*.csv
+house_preidict_class.zip

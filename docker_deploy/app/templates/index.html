@@ -2,7 +2,15 @@
 {% extends "base.html" %}
 
 <!-- 頁面的標題 -->
-{% block title %}TEAM 2{% endblock %}
+{% block title %}--首頁{% endblock %}
+
+<!-- 頁面的CSS -->
+{% block css %}
+{% endblock %}
+
+<!-- 頁面的JS -->
+{% block js %}
+{% endblock %}
 
 <!-- 頁面的頁首 -->
 {% block pageHeader %}
@@ -23,45 +31,57 @@
 
 <!-- 頁面的內容 -->
 {% block main %}
-<h3 style="color: red;">*****未完成：專案簡介與操作說明*****</h3>
-<!-- <article class="mb-4">
+<!-- <h3 style="color: red;">*****未完成：專案簡介與操作說明*****</h3> -->
+<article class="mb-4">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <h2 class="section-heading">發想</h2>
-                <p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it
-                    is a task to occupy the generations. And no matter how much progress one makes, there is always the
-                    thrill of just beginning.</p>
-                <p>There can be no thought of finishing for ‘aiming for the stars.’ Both figuratively and literally, it
-                    is a task to occupy the generations. And no matter how much progress one makes, there is always the
-                    thrill of just beginning.</p>
-                <blockquote class="blockquote">The dreams of yesterday are the hopes of today and the reality of
-                    tomorrow. Science has not yet mastered prophecy. We predict too much for the next year and yet far
-                    too little for the next ten.</blockquote>
-                <p>Spaceflights cannot be stopped. This is not the work of any one man or even a group of men. It is a
-                    historical process which mankind is carrying out in accordance with the natural laws of human
-                    development.</p>
-                <h2 class="section-heading">Reaching for the Stars</h2>
-                <p>As we got further and further away, it [the Earth] diminished in size. Finally it shrank to the size
-                    of a marble, the most beautiful you can imagine. That beautiful, warm, living object looked so
-                    fragile, so delicate, that if you touched it with a finger it would crumble and fall apart. Seeing
-                    this has to change a man.</p>
-                <a href="#!"><img class="img-fluid" src="assets/img/post-sample-image.jpg" alt="..." /></a>
-                <span class="caption text-muted">To go places and do things that have never been done before – that’s
-                    what living is all about.</span>
-                <p>Space, the final frontier. These are the voyages of the Starship Enterprise. Its five-year mission:
-                    to explore strange new worlds, to seek out new life and new civilizations, to boldly go where no man
-                    has gone before.</p>
-                <p>As I stand out here in the wonders of the unknown at Hadley, I sort of realize there’s a fundamental
-                    truth to our nature, Man must explore, and this is exploration at its greatest.</p>
+            <div class="col-md-10 ">
+                <h2 class="section-heading">主題介紹</h2>
                 <p>
-                    Placeholder text by
-                    <a href="http://spaceipsum.com/">Space Ipsum</a>
-                    &middot; Images by
-                    <a href="https://www.flickr.com/photos/nasacommons/">NASA on The Commons</a>
+                    <li>綜合收集影響房屋本身以及周邊環境資料，運用環域分析 (GIS) 以及機器學習手法
+                        綜合推估房價。</li>
+                    <li>用地圖介面提供房屋周遭環境資訊，例如交通、醫療設施，以及商業設施，
+                        讓使用者能夠更直覺的評估房屋地點周遭環境。</li>
                 </p>
+
+                <h2 class="section-heading">實作歷程</h2>
+                <p>
+                <h4>資料挖掘/清理：</h4>
+                <ol>
+                    <li>從實價登錄、政府開放資料、OSM (Open Street Map) 取得六大指標資料 (醫療設施、經濟指標、教育資源、公共安全、自然環境、交通運輸)。</li>
+                    <li>排除低相關/缺失/不良資料 (ex特殊交易型態、住家用以外用途建物、etc.)。</li>
+                    <li>地址 -> 平面空間座標轉換 (環域分析用)。</li>
+                </ol>
+                </p>
+
+                <p>
+                <h4>數據分析處理：</h4>
+                <ol>
+                    <li>選用類神經網路、隨機森林、以及類神經網路混合隨機森林模型進行迴歸分析。</li>
+                    <li>利用Hadoop+Spark加速模型運算、環域分析處理。</li>
+                </ol>
+                </p>
+
+                <p>
+                <h4>資料視覺化：</h4>
+                <ol>
+                    <li>使用Flask搭配Bootstrap框架、並導入chart.js、leaflet 等視覺化函式庫。</li>
+                    <li>使用Heroku雲端主機免費版代管網站。</li>
+                </ol>
+                </p>
+
+
+                <h2 class="section-heading">價值分析</h2>
+                <p>
+                <h4>房屋價格估計準確度：</h4>
+                <ul>
+                    <li>估計房價在實際房價±10%區間的約62%。</li>
+                    <li>估計房價在實際房價±20%區間的約89%。</li>
+                </ul>
+                </p>
+
             </div>
         </div>
     </div>
-</article> -->
+</article>
 {% endblock %}

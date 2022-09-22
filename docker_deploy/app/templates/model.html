@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 <!-- 頁面的標題 -->
-{% block title %}TEAM 2{% endblock %}
+{% block title %}--估價模型{% endblock %}
 
 <!-- 頁面的CSS -->
 {% block css %}
@@ -12,8 +12,8 @@
         min-height: 100%;
     }
 
-    body,
-    div,
+    /* body,
+    div, */
     form,
     input,
     select {
@@ -26,7 +26,7 @@
         line-height: 22px;
     }
 
-    h1,
+    /* h1, */
     h4 {
         margin: 15px 0 4px;
         font-weight: 400;
@@ -105,49 +105,49 @@
         background: #fff;
     }
 
-    .day-visited,
+    /* .day-visited,
     .time-visited {
         position: relative;
-    }
+    } */
 
-    input[type="date"]::-webkit-inner-spin-button {
+    /* input[type="date"]::-webkit-inner-spin-button {
         display: none;
-    }
+    } */
 
-    input[type="time"]::-webkit-inner-spin-button {
+    /* input[type="time"]::-webkit-inner-spin-button {
         margin: 2px 22px 0 0;
-    }
+    } */
 
-    .day-visited i,
+    /* .day-visited i,
     .time-visited i,
     input[type="date"]::-webkit-calendar-picker-indicator {
         position: absolute;
         top: 8px;
         font-size: 20px;
-    }
+    } */
 
-    .day-visited i,
+    /* .day-visited i,
     .time-visited i {
         right: 5px;
         z-index: 1;
         color: #a9a9a9;
-    }
+    } */
 
-    [type="date"]::-webkit-calendar-picker-indicator {
+    /* [type="date"]::-webkit-calendar-picker-indicator {
         right: 0;
         z-index: 2;
         opacity: 0;
-    }
+    } */
 
-    .question-answer label {
+    /* .question-answer label {
         display: block;
         padding: 0 20px 10px 0;
-    }
+    } */
 
-    .question-answer input {
+    /* .question-answer input {
         width: auto;
         margin-top: -2px;
-    }
+    } */
 
     th,
     td {
@@ -231,7 +231,7 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="site-heading">
-                    <h1>估價模型</h1>
+                    <h1 class="reset">估價模型</h1>
                     <span class="subheading reset">輸入估價所需房型資訊</span>
                 </div>
             </div>
@@ -345,7 +345,7 @@
         <h4>建物型態<span>*</span></h4>
         <select name="type">
             <option value="1" selected>公寓</option>
-            <option value="2">華夏</option>
+            <option value="2">華廈</option>
             <option value="3">住宅大樓</option>
             <option value="4">套房</option>
         </select>

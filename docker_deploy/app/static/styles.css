@@ -4546,7 +4546,8 @@ fieldset:disabled .btn {
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
   margin-right: 1rem;
-  font-size: 1.25rem;
+  /* font-size: 1.25rem; */
+  font-size: 2rem;
   white-space: nowrap;
 }
 
@@ -11968,7 +11969,8 @@ blockquote {
 }
 
 #mainNav .navbar-nav>li.nav-item>a.nav-link {
-  font-size: 0.75rem;
+  /* font-size: 0.75rem; */
+  font-size: 1.2rem;
   font-weight: 800;
   letter-spacing: 0.0625em;
   text-transform: uppercase;
@@ -12144,7 +12146,7 @@ footer {
 
 header.masthead {
   position: relative;
-  margin-bottom: 3rem;
+  /* margin-bottom: 3rem; */
   padding-top: calc(8rem + 57px);
   padding-bottom: 8rem;
   background: no-repeat center center;

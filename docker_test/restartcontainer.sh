@@ -1,5 +1,5 @@
 #!/bin/bash
 
 # 重新啟動 app container
-container_name="docker_test_2"
-docker container start ${container_name}
+cname="docker_test_v2.1"
+docker container start ${cname}
