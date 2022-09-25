@@ -175,7 +175,7 @@
         text-align: center;
     }
 
-    button {
+    /* button {
         width: 150px;
         padding: 10px;
         border: none;
@@ -190,7 +190,7 @@
 
     button:hover {
         background-color: #0666a3;
-    }
+    } */
 
     @media (min-width: 568px) {
         .title-block {
@@ -270,16 +270,15 @@
 
         <!-- 1~3/17 -->
         <h4>縣市/區域/詳細地址<span>*</span></h4>
-        <div role="tw-city-selector" data-only="台北市,新北市,基隆市"></div>
+        <div role="tw-city-selector" data-only="台北市" data-county-value="台北市" data-district-value="大安區"></div>
         <script>
             new TwCitySelector();
         </script>
-        <input type="text" name="street" placeholder="詳細地址" value="北平西路3號" />
+        <input type="text" name="street" placeholder="詳細地址" value="復興南路一段390號" />
 
         <!-- 4/17 -->
         <h4>交易標的<span>*</span></h4>
         <select name="target">
-            <option value=""></option>
             <option value="0" selected>房子</option>
             <option value="1">房子+車位</option>
         </select>
@@ -287,12 +286,12 @@
         <!-- 5/17 -->
         <h4>車位種類<span>*</span></h4>
         <select name="parking">
-            <option value="0" selected>無</option>
-            <option value="1">一樓平面</option>
-            <option value="2">升降平面</option>
-            <option value="3">升降機械</option>
-            <option value="4">坡道平面</option>
-            <option value="5">坡道機械</option>
+            <option value="0" selected>無車位</option>
+            <option value="1">一樓平面車位</option>
+            <option value="2">升降平面車位</option>
+            <option value="3">升降機械車位</option>
+            <option value="4">坡道平面車位</option>
+            <option value="5">坡道機械車位</option>
             <option value="6">塔式車位</option>
             <option value="7">其他</option>
         </select>
@@ -308,8 +307,8 @@
         <!-- 9/17 -->
         <h4>有無管理組職<span>*</span></h4>
         <select name="manage_org">
-            <option value="1" selected>有</option>
-            <option value="0">沒有</option>
+            <option value="1" selected>有管理組職</option>
+            <option value="0">無管理組職</option>
         </select>
 
         <!-- 10/17 -->
@@ -329,13 +328,11 @@
         <input type="text" name="age" value=10 />
 
         <!-- 14/17 -->
-        <h4>樓層<span>*</span></h4>
+        <h4>電梯/樓層/總樓層<span>*</span></h4>
         <div class="title-block">
             <select name="elevator">
-                <option value="title" selected>有無電梯</option>
-                <option value="0" selected>無</option>
-                <option value="1">有</option>
-
+                <option value="0" selected>無電梯</option>
+                <option value="1">有電梯</option>
             </select>
             <input class="name" type="text" name="floor" placeholder="樓層" value=3 />
             <input class="name" type="text" name="total_floor" placeholder="總樓層" value=5 />
@@ -360,9 +357,9 @@
 
 
     <!-- loading 圖示，預設隱藏 -->
-    <div id="loading" style="display:none; z-index: 999; position:fixed; top: 20%;">
+    <div id="loading" style="display:none; z-index: 999; position:fixed; top: 10%;">
         <div style=" font-size: x-large; color:#202020; background-color: #b1ddf8">模型計算中...請稍後...</div>
-        <img src="../static/imgs/building.gif" alt="Loading..." height="400" />
+        <img src="../static/imgs/building.gif" alt="Loading..." width="100%" />
     </div>
 </div>
 {% endblock %}

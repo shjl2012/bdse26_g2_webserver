@@ -6,10 +6,8 @@
 
 <!-- 頁面的CSS -->
 {% block css %}
-<!-- <link href="../static/teamStyles.css" rel="stylesheet" /> -->
-
 <style>
-    body {
+    section {
         font-size: 1.5rem;
     }
 
@@ -28,11 +26,32 @@
         margin-bottom: 0;
     }
 
-    p {
+    .team-member p {
         margin-top: 0.5rem;
         margin-bottom: 1rem;
     }
+
+    img:hover {
+        opacity: 0.5;
+        transition: 0.5s;
+    }
+
+    .img-container>.text {
+        width: 80%;
+        text-align: center;
+        background: rgba(34, 49, 63, .6);
+        padding: 10px 0;
+        transform: rotateX(-90deg);
+        transform-origin: 50% 50%;
+        transition: 0.5s;
+        opacity: 0;
+
+        p {
+            font-size: 14px;
+        }
+    }
 </style>
+
 {% endblock %}
 
 <!-- 頁面的JS -->
@@ -49,7 +68,6 @@
                 <div class="site-heading">
                     <h1>組員介紹</h1>
                     <span class="subheading">資展國際 - Big Data 巨量資料分析就業養成班</span>
-                    <!-- containerh -->
                 </div>
             </div>
         </div>
@@ -64,9 +82,14 @@
     <div class="container">
         <div class="row">
             <!-- 組員 1 -->
-            <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_05.jpg" alt="..." />
+            <div class="col-lg-4 ">
+                <div class="team-member img-container">
+                    <!-- email test -->
+                    <div class="text">
+                        <span>Universe</span>
+                        <p>You are your own universe. Explore yourself now.</p>
+                    </div>
+                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_05.jpg" alt="組員一" />
                     <h2>林尚諠</h2>
                     <p class="text-muted">整體專案管理<br>數據平台架設<br>專案部署包建置</p>
                 </div>
@@ -74,7 +97,7 @@
             <!-- 組員 2 -->
             <div class="col-lg-4">
                 <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_04.jpg" alt="..." />
+                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_04.jpg" alt="組員二" />
                     <h2>李旺親</h2>
                     <p class="text-muted">資料收集處理<br>前端視覺化</p>
                 </div>
@@ -82,7 +105,7 @@
             <!-- 組員 3 -->
             <div class="col-lg-4">
                 <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_02.jpg" alt="..." />
+                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_02.jpg" alt="組員三" />
                     <h2>吳欣哲</h2>
                     <p class="text-muted">資料收集處理<br>環域分析<br>模型建置</p>
                 </div>
@@ -90,7 +113,7 @@
             <!-- 組員 4 -->
             <div class="col-lg-4">
                 <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_11.jpg" alt="..." />
+                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_11.jpg" alt="組員四" />
                     <h2>鄒季翃</h2>
                     <p class="text-muted">模型建置<br>資料分析</p>
                 </div>
@@ -98,7 +121,7 @@
             <!-- 組員 5 -->
             <div class="col-lg-4">
                 <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_03.jpg" alt="..." />
+                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_03.jpg" alt="組員五" />
                     <h2>李祉翰</h2>
                     <p class="text-muted">資料收集處理<br>前端視覺化</p>
                 </div>
@@ -106,4 +129,5 @@
         </div>
     </div>
 </section>
+
 {% endblock %}
