@@ -1,6 +1,6 @@
 #!/bin/bash
-iname="johnlin/docker_test_v2.1"
-cname="docker_test_v2.1"
+iname="johnlin/docker_test_v3"
+cname="docker_test_v3"
 docker build -t ${iname} .
 docker container run -d -p 80:5000 --name ${cname} ${iname}
 

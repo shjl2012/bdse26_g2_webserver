@@ -12,9 +12,13 @@
     crossorigin="" />
 <style>
     #map {
-        margin: 10vh auto;
+        margin: 10vh auto 0;
         height: 80vh;
         width: 90vw;
+    }
+
+    .chartText>ul>li {
+        font-size: 16px;
     }
 
     @media (min-width: 992px) {
@@ -29,7 +33,7 @@
 
         #mainNav .navbar-brand:focus,
         #mainNav .navbar-brand:hover {
-            color: rgb(92, 90, 90);
+            color: #095484;
         }
 
         #mainNav .navbar-nav>li.nav-item>a.nav-link {
@@ -38,28 +42,42 @@
 
         #mainNav .navbar-nav>li.nav-item>a.nav-link:focus,
         #mainNav .navbar-nav>li.nav-item>a.nav-link:hover {
-            color: rgb(92, 90, 90);
+            color: #095484;
         }
-    }
 
-    /* Chart.js CSS */
-    canvas {
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-    }
+        .houseContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 90%;
+            margin: 0 auto;
+        }
 
-    .chart-container {
-        /* height: 50%; */
-        width: 80%;
-        margin: 10vh;
-    }
+        .chart {
+            width: 50%;
+        }
 
-    .container {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+        .chartText {
+            width: 40%;
+        }
+
+        .chartText>h5 {
+            font-size: 35px;
+        }
+
+        .chartText>ul>li {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .chartContainer {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
     }
 </style>
 {% endblock %}
@@ -85,10 +103,12 @@
 <!-- OpenStreetMap -->
 <!-- 建立地圖範圍 -->
 <div id="map"></div>
+
 <script>
     //設定圖層群組
     let layerGroup = null;
     let arrLayers = [];
+
 
     // 讀取模型計算地址的經緯度
     var house_lon = {{ house_lon | tojson }};
@@ -105,9 +125,13 @@
 
     // 宮廟經緯度  
     var placeofworkships = {{ placeofworkships | tojson }}
+
+    // 醫院經緯度  
+    var hospitals = {{ hospitals | tojson }}
+
     // 醫院的經緯度，[0]:經度, [1]:緯度
-    var h_lon = {{ hospitals['features'][0]['geometry']['coordinates'][0] | tojson}}
-    var h_lat = {{ hospitals['features'][0]['geometry']['coordinates'][1] | tojson}}
+    // var h_lon = {{ hospitals['features'][0]['geometry']['coordinates'][0] | tojson}}
+    // var h_lat = {{ hospitals['features'][0]['geometry']['coordinates'][1] | tojson}}
 
     // 設定地圖中心與放大比例
     var map = L.map('map', {
@@ -157,10 +181,6 @@
         // iconAnchor: [50, 50], // point of the icon which will correspond to marker's location
     });
 
-
-
-
-
     // 模型計算地址的750m範圍
     var circle = L.circle([house_lat, house_lon], {
         stroke: false,
@@ -172,6 +192,12 @@
 
     // 顯示模型計算地址的房子圖示
     var house_addr = L.marker([house_lat, house_lon], { icon: houseIcon }).addTo(map);
+    // setContent('<h6>估價區間：<br><b>${{ m20_Price }}~${{ p20_Price }} 萬/坪</b></h6>')
+    // .setContent('<h6>估計房價：<br><b>${{price}} 萬/坪</b></h6>')
+    var popup = L.popup()
+        .setLatLng([house_lat, house_lon])
+        .setContent('<h6>估計房價：<br><b>${{price}} 萬/坪</b></h6>')
+        .openOn(map);
 
     // 超商圖資
     for (let c of conveniencestores['features']) {
@@ -189,6 +215,20 @@
 
     //將 layerGroup 放到 map 當中
     layerGroup.addTo(map);
+
+    // 醫院圖資
+    for (let hos of hospitals['features']) {
+        // console.log(c['geometry']['coordinates'][0])
+        let marker = L.marker([hos['geometry']['coordinates'][1], hos['geometry']['coordinates'][0]], { icon: hospitalIcon })
+            .bindPopup('醫院')
+        // .openPopup();
+
+        //將 markers 各別放到空陣列 arrLayers 當中
+        arrLayers.push(marker);
+
+    }
+    //迴圈執行完畢後，將 arrLayers 放到 layerGroup 當中
+    layerGroup = L.layerGroup(arrLayers);
 
     // 公園圖資
     for (let p of parks['features']) {
@@ -238,258 +278,394 @@
     layerGroup.addTo(map);
 
     // 顯示醫院地址的房子圖示
-    var hospitals = L.marker([h_lat, h_lon], { icon: hospitalIcon }).addTo(map);
+    // var hospitals = L.marker([h_lat, h_lon], { icon: hospitalIcon }).addTo(map);
 
 
-
-    // 圖層
-    // var baselayers = {
-    //     'OpenStreetMap.Mapnik': L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
-    //     'OpenStreetMap.DE': L.tileLayer('https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png'),
-    //     'OpenStreetMap.CH': L.tileLayer('https://tile.osm.ch/switzerland/{z}/{x}/{y}.png'),
-    //     'OpenStreetMap.France': L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png'),
-    //     'OpenStreetMap.HOT': L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'),
-    //     'OpenStreetMap.BZH': L.tileLayer('https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png'),
-    //     'OpenTopoMap': L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png')
-    // };
-    // var overlays = {};
-    // L.control.layers(baselayers, overlays).addTo(map);
-    // baselayers['OpenStreetMap.Mapnik'].addTo(map);
-    // L.tileLayer('layer 的 url').addTo(map);
 </script>
+<hr>
+
+<!-- 估價房屋資訊 -->
+<div class="houseContainer">
+    <h3>房屋資訊</h3>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">輸入項目</th>
+                <th scope="col">輸入值</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 地址 -->
+            <tr>
+                <td>估價地址</td>
+                <td>{{address}}</td>
+            </tr>
+            <!-- 交易標的 -->
+            <tr>
+                <td>交易標的</td>
+                <td>{{tInput['target']}}</td>
+            </tr>
+            <!-- 車位種類 -->
+            <tr>
+                <td>車位種類</td>
+                <td>{{tInput['parking']}}</td>
+            </tr>
+            <!-- 房/廳/衛 -->
+            <tr>
+                <td>房/廳/衛</td>
+                <td>{{tInput['bedroom']}}房/{{tInput['livingroom']}}廳/{{tInput['bathroom']}}衛</td>
+            </tr>
+            <!-- 有無管理組職 -->
+            <tr>
+                <td>有無管理組職</td>
+                <td>{{tInput['manage_org']}}</td>
+            </tr>
+            <!-- 主建築物面積 -->
+            <tr>
+                <td>主建築物面積</td>
+                <td>{{tInput['main_area']}}坪</td>
+            </tr>
+            <!-- 附屬建物面積 -->
+            <tr>
+                <td>附屬建物面積</td>
+                <td>{{tInput['sub_area']}}坪</td>
+            </tr>
+            <!-- 陽台面積 -->
+            <tr>
+                <td>陽台面積</td>
+                <td>{{tInput['balcony']}}坪</td>
+            </tr>
+            <!-- 屋齡 -->
+            <tr>
+                <td>屋齡</td>
+                <td>{{tInput['age']}}年</td>
+            </tr>
+            <!-- 樓層 -->
+            <tr>
+                <td>電梯/樓層/總樓</td>
+                <td>{{tInput['elevator']}}/{{tInput['floor']}}樓/{{tInput['total_floor']}}樓</td>
+            </tr>
+            <!-- 建物型態 -->
+            <tr>
+                <td>建物型態</td>
+                <td>{{tInput['type']}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<hr>
 
 <!-- 圖表區 -->
-<div class="container">
-    <!-- 預設圖表字體 -->
-    <script>Chart.defaults.font.size = 18;</script>
+<!-- 預設圖表字體 -->
+<script>
+    CW = document.body.clientWidth;
+    // console.log(CW)
+    if (CW <= 992) {
+        Chart.defaults.font.size = 10;
+        titleFontSize = 12
+    } else {
+        Chart.defaults.font.size = 18;
+        titleFontSize = 20
+    }
 
-    <!-- 長條圖：周邊設施數量統計 -->
-    <div class="chart-container">
-        <canvas id="barChart"></canvas>
-        <script>
-            // 交通運輸設施：tsp_count['total']
-            // 醫療設施：mdc_count['total']
-            // 超商：eco_count['conveniencestores']
-            // 學校：edu_count['schools'] + edu_count['universities']
-            // 宮廟：sft_count['placeofworkships']
-            // 公園：env_count['parks']
-            eco_count = {{ eco_count | tojson }}
-            tsp_count = {{ tsp_count | tojson }}
-            mdc_count = {{ mdc_count | tojson }}
-            eco_count = {{ eco_count | tojson }}
-            edu_count = {{ edu_count | tojson }}
-            sft_count = {{ sft_count | tojson }}
-            env_count = {{ env_count | tojson }}
+</script>
 
-            const bar_labels = [
-                '交通運輸設施',
-                '大型醫院',
-                '超商',
-                '學校',
-                '宮廟',
-                '公園',
-            ];
+<!-- 長條圖：周邊設施數量統計 -->
+<div>
+    <div class="chartContainer">
+        <!-- 圖表區 -->
+        <div class="chart">
+            <canvas id="barChart"></canvas>
+        </div>
+        <!-- 圖表說明 -->
+        <div class="chartText">
+            <h5 style="text-align: center;">長條圖：周邊設施數量統計</h5>
+            <ul>
+                <li>估價地址750公尺範圍內周邊設施數量統計。</li>
+                <li>迎闢設施具正面影響，帶動周遭的不動產增值，如捷運、超商或公園等。</li>
+                <li>因宗教民俗觀念導致嫌惡現象，如公墓或宮廟等，為周遭環境造成正面影響。</li>
+                <!-- <li>其中學校的呈現為小學、國中和高中，大學不列入我們圖表的呈現。</li> -->
+            </ul>
+        </div>
+    </div>
+    <!-- 圖表資料 -->
+    <script>
+        // 交通運輸設施：tsp_count['total']
+        // 醫療設施：mdc_count['total']
+        // 超商：eco_count['conveniencestores']
+        // 學校：edu_count['schools'] + edu_count['universities']
+        // 宮廟：sft_count['placeofworkships']
+        // 公園：env_count['parks']
+        eco_count = {{ eco_count | tojson }}
+        tsp_count = {{ tsp_count | tojson }}
+        mdc_count = {{ mdc_count | tojson }}
+        eco_count = {{ eco_count | tojson }}
+        edu_count = {{ edu_count | tojson }}
+        sft_count = {{ sft_count | tojson }}
+        env_count = {{ env_count | tojson }}
 
-            const bar_data = {
-                labels: bar_labels,
-                datasets: [{
-                    label: '周邊設施',
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 205, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                    ],
-                    borderColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(255, 159, 64)',
-                        'rgb(255, 205, 86)',
-                        'rgb(75, 192, 192)',
-                        'rgb(54, 162, 235)',
-                        'rgb(153, 102, 255)',
-                    ],
-                    borderWidth: 3,
-                    data: [
-                        // tsp_count['total'],
-                        // mdc_count['total'],
-                        // eco_count['conveniencestores'],
-                        // edu_count['schools'] + edu_count['universities'],
-                        // sft_count['placeofworkships'],
-                        // env_count['parks']
-                        {{tsp_count['MRTs']}},
-                        {{mdc_count['hospitals']}},
-                        {{eco_count['conveniencestores']}},
-                        {{edu_count['schools']}},
-                        {{sft_count['placeofworkships']}},
-                        {{env_count['parks']}}
-                    ],
-                }]
-            };
+        const bar_labels = [
+            '捷運出入口',
+            '醫院',
+            '超商',
+            '學校',
+            '宮廟',
+            '公園',
+        ];
 
-            const bar_config = {
-                type: 'bar',
-                data: bar_data,
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
+        const bar_data = {
+            labels: bar_labels,
+            datasets: [{
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 205, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(255, 159, 64)',
+                    'rgb(255, 205, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(54, 162, 235)',
+                    'rgb(153, 102, 255)',
+                ],
+                borderWidth: 3,
+                data: [
+                    tsp_count['MRTs'],
+                    mdc_count['hospitals'],
+                    eco_count['conveniencestores'],
+                    edu_count['schools'],
+                    sft_count['placeofworkships'],
+                    env_count['parks']
+                ],
+            }]
+        };
+
+        const bar_config = {
+            type: 'bar',
+            data: bar_data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    x: {
+                        display: true,
                         title: {
                             display: true,
-                            text: '周邊設施數量統計',
-                            padding: {
-                                top: 10,
-                                bottom: 30
-                            }
-                        },
-                    }
-                },
-            };
-        </script>
-        <script>
-            const barChart = new Chart(
-                document.getElementById('barChart'),
-                bar_config
-            );
-        </script>
-    </div>
-
-    <!-- 折線圖：歷史成交價格 -->
-    <div class="chart-container">
-        <canvas id="line_history_Chart"></canvas>
-        <script>
-            // 估價行政區歷史成交價格
-            history_price = {{ history_price | tojson }};
-
-            const line_history_labels = ['101年', '102年', '103年', '104年', '105年', '106年', '107年', '108年', '109年', '110年',];
-
-            const line_history_data = {
-                labels: line_history_labels,
-                datasets: [{
-                    label: '行政區歷史成交價格',
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: history_price,
-                    tension: 0.1
-                }]
-            };
-
-            const line_history_config = {
-                type: 'line',
-                data: line_history_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 5
+                            text: '周邊設施',
+                            color: '#003D79',
+                            font: {
+                                size: titleFontSize,
+                                weight: 'bold',
+                            },
                         }
                     },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        },
+                    y: {
+                        display: true,
                         title: {
                             display: true,
-                            text: '行政區歷史成交價格',
-                            padding: {
-                                top: 10,
-                                bottom: 30
-                            }
-                        },
-
+                            text: '數量',
+                            color: '#003D79',
+                            font: {
+                                size: titleFontSize,
+                                weight: 'bold',
+                            },
+                        }
                     }
                 }
-            };
+            },
+        };
+    </script>
+    <script>
+        const barChart = new Chart(
+            document.getElementById('barChart'),
+            bar_config
+        );
+    </script>
+</div>
+<hr>
 
-
-        </script>
-
-        <script>
-            const line_history_Chart = new Chart(
-                document.getElementById('line_history_Chart'),
-                line_history_config
-            );
-        </script>
-
+<!-- 折線圖：行政區歷史成交價格 -->
+<div>
+    <div class="chartContainer">
+        <!-- 圖表區 -->
+        <div class="chart">
+            <canvas id="line_history_Chart"></canvas>
+        </div>
+        <!-- 圖表說明 -->
+        <div class="chartText">
+            <h5 style="text-align: center;">折線圖：行政區歷史成交價格</h5>
+            <ul>
+                <li>估價地點的行政區過去10年平均成交價格。</li>
+                <li>依據歷史成交房價可分析目前行情趨勢。</li>
+                <li>。</li>
+            </ul>
+        </div>
     </div>
+    <!-- 圖表資料 -->
+    <script>
+        // 估價行政區歷史成交價格
+        history_price = {{ history_price | tojson }};
 
-    <!-- 雷達圖： -->
-    <div class="chart-container">
-        <canvas id="radarChart" width="400" height="400"></canvas>
-        <script>
-            house_six_ind = {{ house_six_ind | tojson }};
-            dist_six_ind = {{ dist_six_ind | tojson }};
-            const radar_labels = [
-                '醫療設施',
-                '經濟指標',
-                '教育資源',
-                '公共安全',
-                '自然環境',
-                '交通運輸',
-            ];
-            const radar_data = {
-                labels: radar_labels,
-                datasets: [{
-                    label: '輸入地址綜和指標',
-                    data: house_six_ind,
-                    fill: true,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    pointBackgroundColor: 'rgb(255, 99, 132)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(255, 99, 132)'
-                }, {
-                    label: '行政區綜合指標',
-                    data: dist_six_ind,
-                    fill: true,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    pointBackgroundColor: 'rgb(54, 162, 235)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(54, 162, 235)'
-                }]
-            };
+        const line_history_labels = ['101年', '102年', '103年', '104年', '105年', '106年', '107年', '108年', '109年', '110年',];
 
-            const radar_config = {
-                type: 'radar',
-                data: radar_data,
-                options: {
-                    elements: {
-                        line: {
-                            borderWidth: 3
+        const line_history_data = {
+            labels: line_history_labels,
+            datasets: [{
+                label: '行政區歷史成交價格',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: history_price,
+                tension: 0.1
+            }]
+        };
+
+        const line_history_config = {
+            type: 'line',
+            data: line_history_data,
+            options: {
+                elements: {
+                    line: {
+                        borderWidth: 5
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                },
+                scales: {
+                    x: {
+                        display: true,
+                        title: {
+                            display: true,
+                            text: '年份',
+                            color: '#003D79',
+                            font: {
+                                size: titleFontSize,
+                                weight: 'bold',
+                            },
                         }
                     },
-                    plugins: {
-                        legend: {
-                            position: 'top',
+                    y: {
+                        display: true,
+                        ticks: {
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return '$' + value / 10000 + '萬';
+                            }
                         },
                         title: {
                             display: true,
-                            text: '區域指標雷達圖',
-                            padding: {
-                                top: 10,
-                                bottom: 30
-                            }
+                            text: '每坪售價',
+                            color: '#003D79',
+                            font: {
+                                size: titleFontSize,
+                                weight: 'bold',
+                            },
                         }
-                    }
-                },
-            };
+                    },
+                }
+            }
+        };
 
-        </script>
-
-        <script>
-            const radarChart = new Chart(
-                document.getElementById('radarChart'),
-                radar_config
-            );
-        </script>
-
-    </div>
-
+    </script>
+    <script>
+        const line_history_Chart = new Chart(
+            document.getElementById('line_history_Chart'),
+            line_history_config
+        );
+    </script>
 
 </div>
+<hr>
+
+<!-- 雷達圖：區域指標格 -->
+<div>
+    <div class="chartContainer">
+        <!-- 圖表區 -->
+        <div class="chart">
+            <canvas id="radarChart"></canvas>
+        </div>
+        <!-- 圖表說明 -->
+        <div class="chartText">
+            <h5 style="text-align: center;">雷達圖：區域指標</h5>
+            <ul>
+                <li>比較估價地址與該行政區六大指標。</li>
+                <li>。</li>
+                <li>。</li>
+            </ul>
+        </div>
+    </div>
+    <!-- 圖表資料 -->
+    <script>
+        house_six_ind = {{ house_six_ind | tojson }};
+        dist_six_ind = {{ dist_six_ind | tojson }};
+        const radar_labels = [
+            '醫療設施',
+            '經濟指標',
+            '教育資源',
+            '公共安全',
+            '自然環境',
+            '交通運輸',
+        ];
+        const radar_data = {
+            labels: radar_labels,
+            datasets: [{
+                label: '估價地址綜和指標',
+                data: house_six_ind,
+                fill: true,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+                pointBackgroundColor: 'rgb(255, 99, 132)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(255, 99, 132)'
+            }, {
+                label: '行政區綜合指標',
+                data: dist_six_ind,
+                fill: true,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgb(54, 162, 235)',
+                pointBackgroundColor: 'rgb(54, 162, 235)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(54, 162, 235)'
+            }]
+        };
+        const radar_config = {
+            type: 'radar',
+            data: radar_data,
+            options: {
+                scales: {
+                    r: {
+                        pointLabels: {
+                            font: 14
+                        }
+                    },
+                },
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                },
+            },
+        };
+    </script>
+    <script>
+        const radarChart = new Chart(
+            document.getElementById('radarChart'),
+            radar_config
+        );
+    </script>
+    <br>
+</div>
+
 {% endblock %}

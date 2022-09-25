@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from layer.data_preprocessing import HouseObject
 from model.house_price_MLP import HousePriceModel
 from global_function import *
+from visDataProcess import *
 import pandas as pd
 import geopandas as gpd
 import numpy as np
@@ -15,41 +16,48 @@ import json
 # 學校：edu_count['schools']+edu_count['universities']
 # 宮廟：sft_count['placeofworkships']
 # 公園：env_count['parks']
-house_lat, house_lon = 25.033875600120034, 121.54337981087784
-price = 888,888
-tsp_count = {'total':18}
-mdc_count = {'total':21}
-eco_count = {'conveniencestores':26}
-edu_count = {'schools':4, 'universities':1}
-sft_count = {'placeofworkships':3}
-env_count = {'parks':5}
-history_price = [201218.67032967036, 238198.49326599325, 244036.2015503876, 228572.0652680653, 237989.80201342283, 230623.75914634147, 236894.67889908256, 225011.86616161617, 234032.10738255037, 255527.8562992126]
-house_six_ind = [7.569812157161003, 12.41045351575365, 5.216451566090331, 2.0993216684619678, 4.814081897906177, 25.060253955565447]
-dist_six_ind = [5.570392448188305, 5.659833053416503, 7.326122624464884, 5.076397578103819, 5.869877636768275, 6.7098581937439725]
-placeofworkships = []
-parks = {}
-schools = {}
-values = {}
-values2 = {}
+tInput = {
+    'county':'台北市', 
+    'district':'大安區', 
+    'street':'復興南路一段390號', 
+    'target':'0', 
+    'parking':'0', 
+    'bedroom':'3', 
+    'livingroom':'2', 
+    'bathroom':'0', 
+    'manage_org':'0', 
+    'main_area':'60', 
+    'sub_area':'0', 
+    'balcony':'0', 
+    'age':'10', 
+    'elevator':'0', 
+    'floor':'3', 
+    'total_floor':'5', 
+    'type':'2', 
+}
+tableDataProcess(tInput)
+address = '台北市大安區復興南路一段390號'
+house_lat, house_lon = 25.0337025, 121.5433029
+price = [969067.87392507]
+m20_Price, p20_Price, price = priceRange(price)
+tsp_count = {'total': 66, 'parkings': 26, 'busstops': 40, 'MRTs': 9, 'TRAs': 0}
+mdc_count = {'total': 216, 'hospitals': 2, 'clinics': 123, 'dentists': 70, 'pharmacies': 21}
+eco_count = {'total': 37, 'conveniencestores': 36, 'fastfoods': 1}
+edu_count = {'total': 11, 'libraries': 2, 'schools': 9, 'universities': 0}
+sft_count = {'total': 10, 'firestations': 2, 'fuels': 1, 'markets': 2, 'polices': 2, 'placeofworkships': 3}
+env_count = {'total': 24, 'cemeteries': 0, 'parks': 24, 'river_TWs': 0}
+history_price = [833477.0339447, 925378.831485196, 979869.609188918, 912743.703340401, 857023.014172809, 855024.7936883, 873264.86275871, 865294.971969194, 850954.275523239, 958049.299337624]
+house_six_ind = [9.7565967505099, 4.233315822475395, 5.216451566090331, 4.199755656122902, 4.270628270122547, 6.211347752246835]
+dist_six_ind =  [8.066514993450667, 6.045381638868955, 5.921345331761821, 4.897790781128403, 4.3063164650807915, 5.881389971706659]
+placeofworkships = {'type': 'FeatureCollection', 'features': [{'id': '2291', 'type': 'Feature', 'properties': {'full_id': 'n5110348782', 'name': '仁慈宮'}, 'geometry': {'type': 'Point', 'coordinates': [121.5457246, 25.033868700000003]}}, {'id': '2337', 'type': 'Feature', 'properties': {'full_id': 'n5699174878', 'name': '台北護靈宮'}, 'geometry': {'type': 'Point', 'coordinates': [121.5422416, 25.029478600000004]}}, {'id': '2338', 'type': 'Feature', 'properties': {'full_id': 'n5699174907', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.5441486, 25.029216099999996]}}]}
+parks = {'type': 'FeatureCollection', 'features': [{'id': '46', 'type': 'Feature', 'properties': {'full_id': 'r6434668', 'name': '平安公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54927333479729, 25.031939604273767]}}, {'id': '105', 'type': 'Feature', 'properties': {'full_id': 'w18583895', 'name': '大安森林公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.53572709082928, 25.030183875409396]}}, {'id': '113', 'type': 'Feature', 'properties': {'full_id': 'w55228247', 'name': '龍陣二號公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54253010366595, 25.02919265921805]}}, {'id': '189', 'type': 'Feature', 'properties': {'full_id': 'w197475260', 'name': '居安公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54932800767482, 25.029702034519715]}}, {'id': '341', 'type': 'Feature', 'properties': {'full_id': 'w264726963', 'name': '安祥公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54274223314731, 25.034545841508788]}}, {'id': '374', 'type': 'Feature', 'properties': {'full_id': 'w284359015', 'name': '四維公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54533069996721, 25.03063754980526]}}, {'id': '409', 'type': 'Feature', 'properties': {'full_id': 'w303275607', 'name': '新龍公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54019372354222, 25.027671371581082]}}, {'id': '410', 'type': 'Feature', 'properties': {'full_id': 'w303420866', 'name': '龍陣一號公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54254847744916, 25.027617355740823]}}, {'id': '414', 'type': 'Feature', 'properties': {'full_id': 'w303845484', 'name': '龍圖公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54165353518854, 25.03046761831683]}}, {'id': '415', 'type': 'Feature', 'properties': {'full_id': 'w303852587', 'name': '德安公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54777689075513, 25.034860049523186]}}, {'id': '421', 'type': 'Feature', 'properties': {'full_id': 'w304566637', 'name': '和安公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54451182356415, 25.034547625234303]}}, {'id': '422', 'type': 'Feature', 'properties': {'full_id': 'w304566638', 'name': '東豐公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54487450377201, 25.03581890847839]}}, {'id': '640', 'type': 'Feature', 'properties': {'full_id': 'w390780633', 'name': '台北好好看'}, 'geometry': {'type': 'Point', 'coordinates': [121.5384616803943, 25.031014210121082]}}, {'id': '646', 'type': 'Feature', 'properties': {'full_id': 'w403554086', 'name': '仁愛公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54625901087589, 25.03662467477857]}}, {'id': '647', 'type': 'Feature', 'properties': {'full_id': 'w403554087', 'name': '仁慈公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54575162562341, 25.034103635645675]}}, {'id': '648', 'type': 'Feature', 'properties': {'full_id': 'w403554088', 'name': '安東公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54482221025366, 25.028994737335147]}}, {'id': '649', 'type': 'Feature', 'properties': {'full_id': 'w403554089', 'name': '附中公園'}, 'geometry': {'type': 'Point', 'coordinates': [121.54229272200675, 25.03640387745949]}}, {'id': '798', 'type': 'Feature', 'properties': {'full_id': 'w549570624', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.53920956822701, 25.028929933281155]}}, {'id': '919', 'type': 'Feature', 'properties': {'full_id': 'w617310832', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.54890294418122, 25.030505999797732]}}, {'id': '920', 'type': 'Feature', 'properties': {'full_id': 'w617310833', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.54889063621611, 25.02906975872289]}}, {'id': '921', 'type': 'Feature', 'properties': {'full_id': 'w617310834', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.54892948877071, 25.031951271702916]}}, {'id': '922', 'type': 'Feature', 'properties': {'full_id': 'w617310835', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.54863313127494, 25.03206652598075]}}, {'id': '923', 'type': 'Feature', 'properties': {'full_id': 'w617310836', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.54861992845333, 25.03044486465368]}}, {'id': '924', 'type': 'Feature', 'properties': {'full_id': 'w617310837', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.548611390405, 25.028998174234708]}}]} 
+schools = {'type': 'FeatureCollection', 'features': [{'id': '443', 'type': 'Feature', 'properties': {'full_id': 'r4676979', 'name': '仁愛國小'}, 'geometry': {'type': 'Point', 'coordinates': [121.55138972519298, 25.035865110321872]}}, {'id': '448', 'type': 'Feature', 'properties': {'full_id': 'r4730350', 'name': '師大附中'}, 'geometry': {'type': 'Point', 'coordinates': [121.54074096998589, 25.035258177629796]}}, {'id': '456', 'type': 'Feature', 'properties': {'full_id': 'r4774878', 'name': '大安高工'}, 'geometry': {'type': 'Point', 'coordinates': [121.54209608676811, 25.03195158954455]}}, {'id': '480', 'type': 'Feature', 'properties': {'full_id': 'r4790885', 'name': '大安國中'}, 'geometry': {'type': 'Point', 'coordinates': [121.5470283498368, 25.03040058024642]}}, {'id': '489', 'type': 'Feature', 'properties': {'full_id': 'r4790897', 'name': '私立延平中學'}, 'geometry': {'type': 'Point', 'coordinates': [121.53909419266488, 25.03652729188289]}}, {'id': '490', 'type': 'Feature', 'properties': {'full_id': 'r4790899', 'name': '建安國小'}, 'geometry': {'type': 'Point', 'coordinates': [121.54700678356096, 25.029362965711492]}}, {'id': '494', 'type': 'Feature', 'properties': {'full_id': 'r4790903', 'name': '懷生國中'}, 'geometry': {'type': 'Point', 'coordinates': [121.54111751017014, 25.040137590382276]}}, {'id': '528', 'type': 'Feature', 'properties': {'full_id': 'r4790939', 'name': '私立復興中小學'}, 'geometry': {'type': 'Point', 'coordinates': [121.54787937196922, 25.039336150598622]}}, {'id': '621', 'type': 'Feature', 'properties': {'full_id': 'r6889830', 'name': '開平餐飲學校'}, 'geometry': {'type': 'Point', 'coordinates': [121.54226047779959, 25.02866649367961]}}]}
 
+hospitals = {'type': 'FeatureCollection', 'features': [{'id': '429', 'type': 'Feature', 'properties': {'機構名稱': '宏恩醫療財團法人宏恩綜合醫院', '型態別': '綜合醫院'}, 'geometry': {'type': 'Point', 'coordinates': [121.5466881, 25.038191599999994]}}, {'id': '433', 'type': 'Feature', 'properties': {'機構名稱': '中山醫療社團法人中山醫院', '型態別': '綜合醫院'}, 'geometry': {'type': 'Point', 'coordinates': [121.5499289, 25.036515]}}]}
 
-
-
-hospitals = {"type": "FeatureCollection", "features": [{"id": "413", "type": "Feature", "properties": {"\u6a5f\u69cb\u540d\u7a31": "\u570b\u7acb\u81fa\u7063\u5927\u5b78\u91ab\u5b78\u9662\u9644\u8a2d\u91ab\u9662\u5152\u7ae5\u91ab\u9662", "\u578b\u614b\u5225": "\u7d9c\u5408\u91ab\u9662"}, "geometry": {"type": "Point", "coordinates": [121.51858300000002, 25.044327100000004]}}]}
-
-conveniencestores = {"type": "FeatureCollection", "features": [{"id": "10013", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u90e1\u738b\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5103524, 25.045046300000003]}}, {"id": "10021", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e00\u4e00\u516d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.510632, 25.044974699999997]}}, {"id": "10022", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u81fa\u5317\u5dff\u7b2c\uff11\uff16\uff17\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5106688, 25.05215859999999]}}, {"id": "10041", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516b\u56db\u4e03\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5111993, 25.044204599999997]}}, {"id": "10061", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u4e94\u56db\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51160630000001, 25.0443137]}}, {"id": "10063", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u516b\u4e00\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.511644, 25.043066999999997]}}, {"id": "10080", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e09\u4e5d\u4e03\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5122446, 25.045916550000005]}}, {"id": "10087", "type": 
-"Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e00\uff10\u4e94\u516b\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51252610000002, 25.0439381]}}, {"id": "10089", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u9d3b\u555f\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5126107, 25.047133000000002]}}, {"id": "10094", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e94\u56db\u4e94\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51284099999998, 25.0424069]}}, {"id": "10105", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u4e09\u4e94\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51335819999998, 25.0515912]}}, {"id": "10108", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e94\u4e5d\u516b\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5133769, 25.053872300000002]}}, {"id": "10110", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u5341\u56db\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51352800000001, 25.0441669]}}, {"id": "10120", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u4e00\u4e03\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5137413, 25.0424351]}}, {"id": "10121", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516b\u516d\u4e8c\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51375045, 25.053885249999993]}}, {"id": "10122", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u5341\u4e8c\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51377699999999, 25.042208]}}, {"id": "10124", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e00\uff10\u4e8c\u4e94\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51384300000001, 25.045078]}}, {"id": "10129", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e00\uff10\u4e09\u516b\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5140123, 25.0450619]}}, {"id": "10132", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u7b2c\u4e09\uff10\u516b\uff10\u5206\u516c\u53f8"}, "geometry": {"type": 
-"Point", "coordinates": [121.51412689999998, 25.051717300000004]}}, {"id": "10134", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e5d\u4e5d\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5142103, 25.0468959]}}, {"id": "10136", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u897f\u7ad9\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5143012, 25.046214499999998]}}, {"id": "10139", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e94\u516b\u56db\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51440490000002, 25.0450598]}}, {"id": "10151", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e94\u4e94\u4e09\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51479910000002, 25.044615199999996]}}, {"id": "10153", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u56db\u516d\u516d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5149173, 25.054354]}}, {"id": "10159", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u516d\u4e00\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.515144, 25.050517000000003]}}, {"id": "10160", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516b\u4e94\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51515140000001, 25.044830100000002]}}, 
-{"id": "10165", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u7b2c\u4e03\u516b\u4e09\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5152652, 25.053641299999995]}}, {"id": "10182", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e94\u4e5d\u4e00\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51572749999998, 25.051799899999995]}}, {"id": "10185", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516dO\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51583, 25.046222]}}, {"id": "10186", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u5bcc\u967d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5158335, 25.043642599999995]}}, {"id": "10194", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e00\uff10\u4e03\u516b\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51610145, 25.045098649999996]}}, {"id": "10197", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e03\u4e00\u4e09\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5161821, 25.045743699999996]}}, {"id": "10200", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u5357\u967d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", 
-"coordinates": [121.5162199, 25.044802]}}, {"id": "10201", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u56db\u516b\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51625820000001, 25.0460991]}}, {"id": "10215", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u56db\uff10\uff10\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5166625, 25.050424499999995]}}, {"id": "10221", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u516d\u4e94\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51675170000001, 25.044586499999998]}}, {"id": "10222", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e03\u4e09\u4e09\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5167853, 25.045417699999998]}}, {"id": "10227", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e09\u4e09\u4e94\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5169215, 25.045894899999997]}}, {"id": "10244", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e94\u56db\u4e8c\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5174536, 25.0456119]}}, {"id": "10247", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516b\u516b\u56db\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5175818, 25.049840800000002]}}, {"id": "10260", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e5d\u4e00\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51786419999999, 25.04638459999999]}}, {"id": "10261", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u4e03\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5178865, 25.046358599999998]}}, {"id": "10268", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e03\u516d\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51809965, 25.05088235]}}, {"id": "10276", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e5d\u4e03\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5184218, 25.049631499999993]}}, {"id": "10285", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u7b2c\u4e09\u4e94\u4e03\u25cb\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5187842, 25.052351099999996]}}, {"id": "10296", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u56db\u4e09\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51929170000001, 25.053094899999998]}}, {"id": "10301", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e94\u4e5d\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51935825, 25.05015005]}}, {"id": "10305", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u5341\u516d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51957815, 25.0458497]}}, {"id": "10312", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u7b2c\uff13\uff10\uff18\uff18\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51987229999999, 25.052597900000002]}}, {"id": "10314", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u798f\u5b89\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51987620000001, 25.0501431]}}, {"id": "10318", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e03\u4e00\u516d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.519961, 25.050330399999996]}}, {"id": "10367", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u4e5d\u4e5d\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.52148040000002, 25.0518507]}}, {"id": "10371", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u5341\u4e09\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.52166400000002, 25.043755999999995]}}, {"id": "10406", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e03\u5341\u4e00\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.52273570000001, 25.050762699999996]}}, {"id": "10415", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e09\u4e00\u56db\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.5228762, 25.0493891]}}, {"id": "10421", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u65e5\u6d25\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.52311310000002, 25.0501523]}}, {"id": 
-"12683", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u4e03\u4e5d\u516b\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.512025990372, 25.0517741351361]}}, {"id": "12688", "type": "Feature", "properties": {"\u5206\u516c\u53f8\u540d\u7a31": "\u53f0\u5317\u5e02\u7b2c\u516d\u4e00\u4e00\u5206\u516c\u53f8"}, "geometry": {"type": "Point", "coordinates": [121.51871680663798, 25.046173978885395]}}]}
-
-
-
+conveniencestores = {'type': 'FeatureCollection', 'features': [{'id': '10789', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第六O六分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5360515, 25.034213600000005]}}, {'id': '10803', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第九七一分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5367438, 25.0327527]}}, {'id': '10813', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第３６１分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.53728920000002, 25.0363427]}}, {'id': '10836', 'type': 'Feature', 'properties': {'分公司名稱': '北市安建分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.53820649999999, 25.0348054]}}, {'id': '10859', 'type': 'Feature', 'properties': {'分公司名稱': '北市建國分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.53911400000001, 25.0294396]}}, {'id': '10862', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第１６０分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.53922110000002, 25.029078249999998]}}, {'id': '10867', 'type': 'Feature', 'properties': {'分公司名稱': '建國分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5392682, 25.028654100000004]}}, {'id': '10869', 'type': 'Feature', 'properties': {'分公司名稱': '信美分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.53927940000001, 25.0330036]}}, {'id': '10925', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第１１０分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54106209999999, 25.028544299999997]}}, {'id': '10956', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第七九三分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54227689999999, 25.0332039]}}, {'id': '10985', 'type': 'Feature', 'properties': {'分公司名稱': '興南分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5432299, 25.027712299999997]}}, {'id': '10986', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第１９３分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54326704999998, 25.030940349999998]}}, {'id': '10987', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第七四八分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.543307, 25.035221]}}, {'id': '10988', 'type': 'Feature', 'properties': {'分公司名稱': '興忠分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54344520000001, 25.039723099999996]}}, {'id': '11001', 'type': 'Feature', 'properties': {'分公司名稱': '興和分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54378429999998, 25.028265499999993]}}, {'id': '11004', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第四七九分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54381390000002, 25.0322632]}}, {'id': '11005', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第六八一分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5439069, 25.0365515]}}, {'id': '11008', 'type': 'Feature', 'properties': {'分公司名稱': '興仁分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54395829999999, 25.039100000000005]}}, {'id': '11009', 'type': 'Feature', 'properties': {'分公司名稱': '北市安復分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54402605000001, 25.039935749999994]}}, {'id': '11015', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第一七九分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54412315000002, 25.039939649999997]}}, {'id': '11021', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第３６０分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5442501, 25.036148799999996]}}, {'id': '11044', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第四九五分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54500680000001, 25.033039899999995]}}, {'id': '11052', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第４１２分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5453595, 25.038767699999998]}}, {'id': '11053', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第１８４分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54539960000001, 25.028485300000003]}}, {'id': '11059', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第五七一分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54550720000002, 25.0361643]}}, {'id': '11062', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第一０七二分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5458156, 25.033676]}}, {'id': '11063', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第３５８分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54585059999998, 25.030836400000002]}}, {'id': '11064', 'type': 'Feature', 'properties': {'分公司名稱': '台北巿第２５３分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54585499999999, 25.0303178]}}, {'id': '11065', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第４０１分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54590140000002, 25.034337800000003]}}, {'id': '11097', 'type': 'Feature', 'properties': {'分公司名稱': '仁慈分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54702750000001, 25.037108199999995]}}, {'id': '11105', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第七六六分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54742989999998, 25.0381722]}}, {'id': '11118', 'type': 'Feature', 'properties': {'分公司名稱': '第九七九分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5480549, 25.033057199999995]}}, {'id': '11131', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第六七四分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5491721, 25.030107099999995]}}, {'id': '11142', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第六０五分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54955520000001, 25.031157099999998]}}, {'id': '11146', 'type': 'Feature', 'properties': {'分公司名稱': '敦新分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.54974230000002, 25.0369716]}}, {'id': '11156', 'type': 'Feature', 'properties': {'分公司名稱': '台北市第七二一分公司'}, 'geometry': {'type': 'Point', 'coordinates': [121.5501914, 25.0346191]}}]}
 
 app = Flask(__name__)
-
-
 
 # 首頁：網頁使用說明
 @app.route('/')
@@ -197,9 +205,30 @@ def get_form():
 
         price, house_six_ind, dist_six_ind, residuals, history_price = get_visualize_data(request.values, result)
 
+        tInput = {
+            'target':request.values['target'], 
+            'parking':request.values['parking'], 
+            'bedroom':request.values['bedroom'], 
+            'livingroom':request.values['livingroom'], 
+            'bathroom':request.values['bathroom'], 
+            'manage_org':request.values['manage_org'], 
+            'main_area':request.values['main_area'], 
+            'sub_area':request.values['sub_area'], 
+            'balcony':request.values['balcony'], 
+            'age':request.values['age'], 
+            'elevator':request.values['elevator'], 
+            'floor':request.values['floor'], 
+            'total_floor':request.values['total_floor'], 
+            'type':request.values['type'], 
+        }
+        tableDataProcess(tInput)
+        m20_Price, p20_Price, price = priceRange(price)
+
         return render_template('analysis.html', 
-        house_six_ind = house_six_ind, 
-        dist_six_ind = dist_six_ind, 
+        tInput=tInput, 
+        address=address,
+        house_six_ind=house_six_ind, 
+        dist_six_ind=dist_six_ind, 
         history_price=history_price,
         hospitals=hospitals, 
         house_lon=house_lon, 
@@ -209,38 +238,45 @@ def get_form():
         schools=schools,
         placeofworkships=placeofworkships,
         price=price,
+        m20_Price=m20_Price,
+        p20_Price=p20_Price,
         mdc_count = mdc_count,
         eco_count = eco_count,
         edu_count = edu_count,
         sft_count = sft_count,
         env_count = env_count,
         tsp_count = tsp_count,
-        values=house_six_ind,
-        values2=dist_six_ind,
-        history_values=history_price,
-        residuals_values=residuals)
+        )
 
 # 數據分析頁
 @app.route('/analysis')
 def analysis():
+
+
+
+
     return render_template("analysis.html",
+        tInput=tInput, 
+        address=address,
         house_six_ind = house_six_ind, 
         dist_six_ind = dist_six_ind, 
-        placeofworkships = placeofworkships, 
+        history_price=history_price, 
         hospitals=hospitals, 
         house_lon=house_lon, 
         house_lat=house_lat, 
         conveniencestores=conveniencestores,
-        history_price=history_price, 
+        parks = parks, 
+        schools=schools,
+        placeofworkships = placeofworkships, 
         price=price,
+        m20_Price=m20_Price,
+        p20_Price=p20_Price,
         tsp_count = tsp_count, 
         mdc_count = mdc_count, 
         eco_count = eco_count, 
         edu_count = edu_count, 
         sft_count = sft_count, 
         env_count = env_count, 
-        parks = parks, 
-        schools=schools,
         )
 
 # 組員介紹頁
