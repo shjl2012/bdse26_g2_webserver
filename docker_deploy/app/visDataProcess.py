@@ -52,11 +52,13 @@ def tableDataProcess(tInput:dict):
 
     return tInput
 
-def priceRange(price:list):
+def priceRange(price:list, history_price:list):
     """
     計算模型估價結果的±20%範圍，單位：萬元
+    109年歷史平均價格，單位：萬元
     """
     m20_Price = round(float(price[0])/10000*0.8, 2)
     p20_Price = round(float(price[0])/10000*1.2, 2)
     price=round(float(price[0])/10000, 2)
-    return m20_Price, p20_Price, price
+    history_price_109 = round(float(history_price[8])/10000, 2)
+    return m20_Price, p20_Price, price, history_price_109
