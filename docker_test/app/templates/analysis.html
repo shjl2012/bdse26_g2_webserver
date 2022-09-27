@@ -21,6 +21,10 @@
         font-size: 16px;
     }
 
+    .chartText>ul>ol>li {
+        font-size: 14px;
+    }
+
     @media (min-width: 992px) {
         #mainNav {
             border-bottom: 1px solid transparent;
@@ -71,6 +75,10 @@
             margin-bottom: 10px;
         }
 
+        .chartText>ul>ol>li {
+            font-size: 20px;
+        }
+
         .chartContainer {
             display: flex;
             flex-direction: row;
@@ -78,6 +86,19 @@
             justify-content: center;
         }
 
+    }
+
+    #addText {
+        color: rgb(255, 99, 132);
+
+    }
+
+    #distText {
+        color: rgb(54, 162, 235);
+    }
+
+    #nimbyText {
+        background-color: rgb(255, 249, 213);
     }
 </style>
 {% endblock %}
@@ -381,9 +402,10 @@
         <div class="chartText">
             <h5 style="text-align: center;">長條圖：周邊設施數量統計</h5>
             <ul>
-                <li>估價地址750公尺範圍內周邊設施數量統計。</li>
+                <li>估價地址：<b id="addText">{{address}}</b>。</li>
+                <li>統計範圍：半徑750公尺周邊設施。</li>
                 <li>迎闢設施具正面影響，帶動周遭的不動產增值，如捷運、超商或公園等。</li>
-                <li>因宗教民俗觀念導致嫌惡現象，如公墓或宮廟等，為周遭環境造成正面影響。</li>
+                <li>因宗教民俗觀念導致嫌惡現象，如公墓或宮廟等，為周遭環境造成負面影響。</li>
                 <!-- <li>其中學校的呈現為小學、國中和高中，大學不列入我們圖表的呈現。</li> -->
             </ul>
         </div>
@@ -503,9 +525,12 @@
         <div class="chartText">
             <h5 style="text-align: center;">折線圖：行政區歷史成交價格</h5>
             <ul>
-                <li>估價地點的行政區過去10年平均成交價格。</li>
-                <li>依據歷史成交房價可分析目前行情趨勢。</li>
-                <li>。</li>
+                <li>呈現過去10年平均成交價格數據增減幅度與規律。</li>
+                <li>估價地址：<b id="addText">{{address}}</b>。</li>
+                <li>估計房價：<b>${{price}} 萬/坪</b>。</li>
+                <li>行政區：<b id="distText">{{tInput['district']}}</b>。</li>
+                <li><b id="distText">{{tInput['district']}}</b>109年平均成交價格：<b>${{history_price_109}} 萬/坪</b>。</li>
+
             </ul>
         </div>
     </div>
@@ -598,9 +623,20 @@
         <div class="chartText">
             <h5 style="text-align: center;">雷達圖：區域指標</h5>
             <ul>
-                <li>比較估價地址與該行政區六大指標。</li>
-                <li>。</li>
-                <li>。</li>
+                <li>估價地址(750公尺範圍)：<b id="addText">{{address}}</b>。</li>
+                <li>行政區：<b id="distText">{{tInput['district']}}</b>。</li>
+                <li>綜合指標：</li>
+                <ol>
+                    <li>醫療設施：醫院、診所、牙醫診所、藥局。</li>
+                    <li>經濟指標：超商、速食店。</li>
+                    <li>教育資源：學校、圖書館、大學。</li>
+                    <li>公共安全：消防局、<span id="nimbyText">加油站</span>、<span id="nimbyText">市場</span>、警局、<span
+                            id="nimbyText">宮廟</span>。</li>
+                    <li>自然環境：<span id="nimbyText">公墓</span>、公園、河川。</li>
+                    <li>交通運輸：停車場、公車站、火車、輕軌、捷運。</li>
+                </ol>
+                <li>指標單位：依該縣市統計資料比對估價地址與行政區之級距。</li>
+                <li>透過雷達圖能夠看出估價地址綜合指標的數據傾向。</li>
             </ul>
         </div>
     </div>

@@ -31,24 +31,26 @@
         margin-bottom: 1rem;
     }
 
-    img:hover {
-        opacity: 0.5;
+
+    /* test email */
+    #teamLink {
+        position: absolute;
+        top: 50%;
+        left: 43%;
+        transform: translate(-50%, -50%);
+        transform: rotateY(90deg);
+        transition: 0.3s;
+    }
+
+    .team-member #info:hover img {
+        opacity: 0.4;
         transition: 0.5s;
     }
 
-    .img-container>.text {
-        width: 80%;
-        text-align: center;
-        background: rgba(34, 49, 63, .6);
-        padding: 10px 0;
-        transform: rotateX(-90deg);
-        transform-origin: 50% 50%;
+    #info:hover #teamLink {
+        transform-origin: 0% 0%;
+        transform: rotateY(0deg);
         transition: 0.5s;
-        opacity: 0;
-
-        p {
-            font-size: 14px;
-        }
     }
 </style>
 
@@ -56,7 +58,6 @@
 
 <!-- 頁面的JS -->
 {% block js %}
-
 {% endblock %}
 
 <!-- 頁面的頁首 -->
@@ -75,59 +76,113 @@
 </header>
 {% endblock %}
 
-
 <!-- 頁面的內容 -->
 {% block main %}
 <section class="page-section bg-light" id="team">
     <div class="container">
         <div class="row">
             <!-- 組員 1 -->
-            <div class="col-lg-4 ">
-                <div class="team-member img-container">
-                    <!-- email test -->
-                    <div class="text">
-                        <span>Universe</span>
-                        <p>You are your own universe. Explore yourself now.</p>
+            <div class="col-lg-4">
+                <div class="team-member" style="position: relative;">
+                    <div id="info">
+                        <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_05.jpg" alt="test" />
+                        <!-- email icon -->
+                        <div id="teamLink">
+                            <a href="mailto:sh.john.lin@gmail.com">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_05.jpg" alt="組員一" />
                     <h2>林尚諠</h2>
                     <p class="text-muted">整體專案管理<br>數據平台架設<br>專案部署包建置</p>
                 </div>
             </div>
             <!-- 組員 2 -->
             <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_04.jpg" alt="組員二" />
+                <div class="team-member" style="position: relative;">
+                    <div id="info">
+                        <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_04.jpg" alt="test" />
+                        <!-- email icon -->
+                        <div id="teamLink">
+                            <a href="mailto:liwangcin@gmail.com">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
                     <h2>李旺親</h2>
                     <p class="text-muted">資料收集處理<br>前端視覺化</p>
                 </div>
             </div>
             <!-- 組員 3 -->
             <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_02.jpg" alt="組員三" />
+                <div class="team-member" style="position: relative;">
+                    <div id="info">
+                        <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_02.jpg" alt="test" />
+                        <!-- email icon -->
+                        <div id="teamLink">
+                            <a href="mailto:xinzhe458@gmail.com">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
                     <h2>吳欣哲</h2>
                     <p class="text-muted">資料收集處理<br>環域分析<br>模型建置</p>
                 </div>
             </div>
             <!-- 組員 4 -->
             <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_11.jpg" alt="組員四" />
+                <div class="team-member" style="position: relative;">
+                    <div id="info">
+                        <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_11.jpg" alt="test" />
+                        <!-- email icon -->
+                        <div id="teamLink">
+                            <a href="mailto:globee3512@gmail.com">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
                     <h2>鄒季翃</h2>
                     <p class="text-muted">模型建置<br>資料分析</p>
                 </div>
             </div>
             <!-- 組員 5 -->
             <div class="col-lg-4">
-                <div class="team-member">
-                    <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_03.jpg" alt="組員五" />
+                <div class="team-member" style="position: relative;">
+                    <div id="info">
+                        <img class="mx-auto rounded-circle" src="../static/imgs/photos/BDSE26_03.jpg" alt="test" />
+                        <!-- email icon -->
+                        <div id="teamLink">
+                            <a href="mailto:hank4040528@gmail.com">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                    class="bi bi-envelope" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
                     <h2>李祉翰</h2>
                     <p class="text-muted">資料收集處理<br>前端視覺化</p>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
-
 {% endblock %}

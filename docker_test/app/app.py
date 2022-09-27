@@ -24,22 +24,21 @@ tInput = {
     'parking':'0', 
     'bedroom':'3', 
     'livingroom':'2', 
-    'bathroom':'0', 
-    'manage_org':'0', 
+    'bathroom':'2', 
+    'manage_org':'1', 
     'main_area':'60', 
     'sub_area':'0', 
     'balcony':'0', 
     'age':'10', 
-    'elevator':'0', 
-    'floor':'3', 
-    'total_floor':'5', 
+    'elevator':'1', 
+    'floor':'2', 
+    'total_floor':'10', 
     'type':'2', 
 }
 tableDataProcess(tInput)
 address = '台北市大安區復興南路一段390號'
 house_lat, house_lon = 25.0337025, 121.5433029
-price = [969067.87392507]
-m20_Price, p20_Price, price = priceRange(price)
+price = [1179966.85270333]
 tsp_count = {'total': 66, 'parkings': 26, 'busstops': 40, 'MRTs': 9, 'TRAs': 0}
 mdc_count = {'total': 216, 'hospitals': 2, 'clinics': 123, 'dentists': 70, 'pharmacies': 21}
 eco_count = {'total': 37, 'conveniencestores': 36, 'fastfoods': 1}
@@ -47,6 +46,7 @@ edu_count = {'total': 11, 'libraries': 2, 'schools': 9, 'universities': 0}
 sft_count = {'total': 10, 'firestations': 2, 'fuels': 1, 'markets': 2, 'polices': 2, 'placeofworkships': 3}
 env_count = {'total': 24, 'cemeteries': 0, 'parks': 24, 'river_TWs': 0}
 history_price = [833477.0339447, 925378.831485196, 979869.609188918, 912743.703340401, 857023.014172809, 855024.7936883, 873264.86275871, 865294.971969194, 850954.275523239, 958049.299337624]
+m20_Price, p20_Price, price, history_price_109 = priceRange(price, history_price)
 house_six_ind = [9.7565967505099, 4.233315822475395, 5.216451566090331, 4.199755656122902, 4.270628270122547, 6.211347752246835]
 dist_six_ind =  [8.066514993450667, 6.045381638868955, 5.921345331761821, 4.897790781128403, 4.3063164650807915, 5.881389971706659]
 placeofworkships = {'type': 'FeatureCollection', 'features': [{'id': '2291', 'type': 'Feature', 'properties': {'full_id': 'n5110348782', 'name': '仁慈宮'}, 'geometry': {'type': 'Point', 'coordinates': [121.5457246, 25.033868700000003]}}, {'id': '2337', 'type': 'Feature', 'properties': {'full_id': 'n5699174878', 'name': '台北護靈宮'}, 'geometry': {'type': 'Point', 'coordinates': [121.5422416, 25.029478600000004]}}, {'id': '2338', 'type': 'Feature', 'properties': {'full_id': 'n5699174907', 'name': None}, 'geometry': {'type': 'Point', 'coordinates': [121.5441486, 25.029216099999996]}}]}
@@ -206,6 +206,7 @@ def get_form():
         price, house_six_ind, dist_six_ind, residuals, history_price = get_visualize_data(request.values, result)
 
         tInput = {
+            'district':request.values['district'], 
             'target':request.values['target'], 
             'parking':request.values['parking'], 
             'bedroom':request.values['bedroom'], 
@@ -222,9 +223,10 @@ def get_form():
             'type':request.values['type'], 
         }
         tableDataProcess(tInput)
-        m20_Price, p20_Price, price = priceRange(price)
+        m20_Price, p20_Price, price, history_price_109 = priceRange(price, history_price)
 
         return render_template('analysis.html', 
+        history_price_109=history_price_109,
         tInput=tInput, 
         address=address,
         house_six_ind=house_six_ind, 
@@ -252,10 +254,8 @@ def get_form():
 @app.route('/analysis')
 def analysis():
 
-
-
-
     return render_template("analysis.html",
+        history_price_109=history_price_109,
         tInput=tInput, 
         address=address,
         house_six_ind = house_six_ind, 

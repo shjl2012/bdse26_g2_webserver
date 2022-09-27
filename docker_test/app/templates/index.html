@@ -35,50 +35,20 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 ">
-                <h2 class="section-heading">主題介紹</h2>
+                <h2 class="section-heading" style="text-align: center;">好房GoodJob！估價你的好房！</h2>
                 <p>
-                <ul>
-                    <li>綜合收集影響房屋本身以及周邊環境資料，運用環域分析 (GIS) 以及機器學習手法綜合推估房價。</li>
-                    <li>用地圖介面提供房屋周遭環境資訊，例如交通、醫療設施，以及商業設施，讓使用者能夠更直覺的評估房屋地點周遭環境。</li>
-                </ul>
+                    我們是 BDSE26 第二組，好房 GoodJob！是我們研究『房地產標的估價』主題所做出的專案，以實務網頁為目標，提供完整結合『估價』以及『標的周遭環境分析』2 點的分析服務。
                 </p>
-
-                <h2 class="section-heading">實作歷程</h2>
                 <p>
-                <h4>資料挖掘/清理：</h4>
-                <ol>
-                    <li>從實價登錄、政府開放資料、OSM (Open Street Map) 取得六大指標資料 (醫療設施、經濟指標、教育資源、公共安全、自然環境、交通運輸)。</li>
-                    <li>排除低相關/缺失/不良資料 (ex特殊交易型態、住家用以外用途建物、etc.)。</li>
-                    <li>地址 -> 平面空間座標轉換 (環域分析用)。</li>
-                </ol>
+                    收集過往房地產標的實價成交案例、以及醫療、經濟、教育、公共安全、自然環境、交通運輸設施等生活機能設施資料，結合環域分析以及機器/深度學習手法，建立估價模型。
                 </p>
-
                 <p>
-                <h4>數據分析處理：</h4>
-                <ol>
-                    <li>選用類神經網路、隨機森林、以及類神經網路混合隨機森林模型進行迴歸分析。</li>
-                    <li>利用Hadoop+Spark加速模型運算、環域分析處理。</li>
-                </ol>
+                    估價結果將以地圖 + 圖表連動的形式呈現，透過地圖顯示估價標的物周遭環境，並以圖表輔助用更簡單易懂的形式呈現統計結果。
                 </p>
-
                 <p>
-                <h4>資料視覺化：</h4>
-                <ol>
-                    <li>使用Flask搭配Bootstrap框架、並導入chart.js、leaflet 等視覺化函式庫。</li>
-                    <li>使用Heroku雲端主機免費版代管網站。</li>
-                </ol>
+                    若有任何問題，歡迎至好房 GoodJob！的<a
+                        href="https://github.com/shjl2012/HousePrice_Prediction/issues">GitHub</a>，透過issue功能留下訊息，我們會盡快回覆，謝謝！<br>
                 </p>
-
-
-                <h2 class="section-heading">價值分析</h2>
-                <p>
-                <h4>房屋價格估計準確度：</h4>
-                <ul>
-                    <li>估計房價在實際房價±10%區間的約62%。</li>
-                    <li>估計房價在實際房價±20%區間的約89%。</li>
-                </ul>
-                </p>
-
             </div>
         </div>
     </div>
